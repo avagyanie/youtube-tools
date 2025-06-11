@@ -1,10 +1,11 @@
 from tqdm import tqdm
+import time
 from pytubefix import Playlist, YouTube
 
 
 URL = 'https://www.youtube.com/watch?v=LkaOWVPS7PY'
 # PLAYLIST_URL = 'https://www.youtube.com/watch?v=vCVZUMun37U&list=PLk4nzq9lMqGS_0xzQjCkKl_VssLYPWI9f'
-PLAYLIST_URL = input("Enter the YouTube playlist URL: ")
+
 
 def get_info(url: str) -> dict:
     """
@@ -47,20 +48,24 @@ def get_playlist_info(pl_url: str) -> list:
         views, length, publish_date, thumbnail_url
     """
 
-    print('Fetching info for playlist: {pl_url}')
+    print(f'Fetching info for playlist: {pl_url}')
 
     pl = Playlist(pl_url)
 
     all_videos = []
 
     for video in tqdm(pl.video_urls):
-        print('Fetching info for video: {video}')
+        print(f'Fetching info for video: {video}')
         all_videos.append(get_info(video))
     all_videos.sort(key=lambda x: x['views'], reverse=True)
 
     return all_videos
 
 if __name__ == '__main__':
+    st = time.perf_counter()
+    PLAYLIST_URL = input("Enter the YouTube playlist URL: ")
     playlist_info = get_playlist_info(PLAYLIST_URL)
     print('Done')
     print(playlist_info)
+    end = time.perf_counter()
+    print(f"Time taken: {end - st:.2f} seconds")
