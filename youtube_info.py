@@ -1,5 +1,6 @@
-from tqdm import tqdm
 import time
+import json
+from tqdm import tqdm
 from pytubefix import Playlist, YouTube
 
 
@@ -68,4 +69,8 @@ if __name__ == '__main__':
     print('Done')
     print(playlist_info)
     end = time.perf_counter()
+
+    with open('playlist_info.json', 'w') as f:
+        json.dump(playlist_info, f, indent=4)
+
     print(f"Time taken: {end - st:.2f} seconds")
